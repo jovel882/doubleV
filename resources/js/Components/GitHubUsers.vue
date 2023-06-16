@@ -59,8 +59,8 @@
                         <td>
                             <a
                                 v-if="user.score >= 0.5"
-                                :href="'#'"
-                                target="_self"
+                                :href="routerDetailsUrl + '/' + user.login"
+                                target="_blank"
                                 ><i class="fa-solid fa-eye me-2"></i>Ver
                                 detalle</a
                             >
@@ -86,6 +86,7 @@ export default {
             isLoading: false,
             error: "",
             isInputValid: false,
+            routerDetailsUrl: routerDetails
         };
     },
     components: {

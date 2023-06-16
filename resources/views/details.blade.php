@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @push('includes')
-    @vite('resources/js/gitHubUsers.js')
+    @vite('resources/js/gitHubUser.js')
 @endpush
 
 @section('content')
-    <div class="row" id="gitHubUsers">
+    <div class="row" id="gitHubUser">
     </div>
 @endsection
 
 @push('js')
     <script>
-        let routerDetails = '{{ route('details') }}';
+        let loginUser = '{{ $login }}';
     </script>
 @endpush
