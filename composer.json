@@ -1,7 +1,15 @@
 {
-    "name": "laravel/laravel",
+    "name": "jovel882/doublev",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Test DoubleVPartners.",
+    "authors": [
+        {
+            "name": "John Fredy Velasco Bareño",
+            "email": "jovel882@gmail.com",
+            "homepage": "https://github.com/jovel882",
+            "role": "Developer"
+        }
+    ],
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
