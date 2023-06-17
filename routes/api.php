@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
+use LaravelJsonApi\Laravel\Routing\ResourceRegistrar;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('client')->get('/user', function (Request $request) {
-    return $request->all();
-});
+JsonApiRoute::server('v1')
+    ->middleware('client')
+    ->prefix('v1')
+    ->resources(function (ResourceRegistrar $server) {
+        $server->resource('tickets', JsonApiController::class);
+    });

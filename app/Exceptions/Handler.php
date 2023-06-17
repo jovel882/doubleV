@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use LaravelJsonApi\Core\Exceptions\JsonApiException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -12,10 +13,15 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
-    protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
+    protected $dontFlash = ['current_password', 'password', 'password_confirmation'];
+
+    /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
+        JsonApiException::class,
     ];
 
     /**
@@ -23,8 +29,13 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+        
         $this->reportable(function (Throwable $e) {
             //
         });
+        
+        $this->renderable(
+            \LaravelJsonApi\Exceptions\ExceptionParser::make()->renderable()
+        );
     }
 }
