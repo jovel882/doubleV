@@ -31,6 +31,7 @@ class TicketCollectionQuery extends ResourceQuery
             'filter.user' => 'array',
             'filter.status' => 'array',
             'filter.status.*' => [
+                'nullable',
                 'in:abierto,cerrado'
             ],
             'include' => [
