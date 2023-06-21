@@ -14,6 +14,7 @@
                 v-model="username"
                 placeholder="Ingrese el nombre de usuario"
                 @input="validateInput"
+                @keyup.enter="searchUser"
             />
             <button
                 class="btn btn-primary"
@@ -69,7 +70,10 @@
                 </tbody>
             </table>
 
-            <canvas ref="chart" class="my-5"></canvas>
+            <canvas v-if="errorChart.length == 0" ref="chart" class="my-5"></canvas>
+            <div v-else>
+                <ErrorAlert :errors="errorChart" />
+            </div>            
         </div>
     </div>
 </template>
@@ -85,8 +89,9 @@ export default {
             users: [],
             isLoading: false,
             error: "",
+            errorChart: [],
             isInputValid: false,
-            routerDetailsUrl: routerDetails
+            routerDetailsUrl: routerDetails,
         };
     },
     components: {
@@ -104,12 +109,16 @@ export default {
 
             this.isLoading = true;
             this.error = "";
-
+            this.errorChart = [];
             fetch(`https://api.github.com/search/users?q=${this.username}`)
                 .then((response) => response.json())
                 .then((data) => {
                     this.users = data.items.slice(0, 10);
-                    this.fetchFollowers();
+                    if (this.users.length == 0) {
+                        this.error = "No hay coincidencias con la busqueda.";
+                    } else {                        
+                        this.fetchFollowers();
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -123,18 +132,26 @@ export default {
         fetchFollowers() {
             const fetchFollowersPromises = this.users.map((user) => {
                 return fetch(user.url)
-                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.ok)
+                            return response.json();
+
+                            throw new Error(response.status);
+                    })
                     .then((data) => {
                         user.followers_count = data.followers;
                     })
                     .catch((error) => {
-                        console.error(error);
-                        user.followers_count = "N/A";
+                        user.followers_count = 0;
+                        this.errorChart.push(`No se pudieron obtener los seguidores del usuario: ${user.login}.`);
+                        throw new Error(error);
                     });
             });
 
             Promise.all(fetchFollowersPromises).then(() => {
                 this.createChart();
+            }).catch((error) => {
+                console.log(error);
             });
         },
         createChart() {

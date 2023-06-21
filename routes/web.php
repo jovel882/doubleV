@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 Route::redirect('/login', 'api/documentation')->name('login');
-Route::get('/details/{login?}', function ($login) {
+Route::get('/details/{login?}', function ($login='') {
     return view('details', compact('login'));
 })->name('details');

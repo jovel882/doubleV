@@ -665,8 +665,8 @@
                 "tags": [
                     "ticket"
                 ],
-                "summary": "Search ticket by values in the fields of status and user.",
-                "description": "Search ticket by values in the fields of status and user.",
+                "summary": "Search ticket by values in the fields of id, status and user.",
+                "description": "Search ticket by values in the fields of id, status and user.",
                 "operationId": "searchTicket",
                 "parameters": [
                     {
